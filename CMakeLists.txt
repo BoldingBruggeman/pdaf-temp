@@ -65,5 +65,6 @@ if(BUILD_SHARED_LIBS)
 endif()
 
 add_subdirectory(src)
+add_subdirectory(external)
 #KBadd_subdirectory(testsuite/src/dummymodel_1D)
 #KBadd_subdirectory(test)
