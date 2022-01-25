@@ -8,11 +8,11 @@ add_library(optim
             LBFGS/linpack.f
             LBFGS/timer.f
            )
-target_include_directories(optim
-    PUBLIC
-        $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/modules>
-)
+#KBtarget_include_directories(optim
+#KB    PUBLIC
+#KB        $<INSTALL_INTERFACE:include>
+#KB        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/modules>
+#KB)
 
 # In principle the code should be fixed - but here we provide a working fix
 # Set -fallow-argument-mismatch for major version >= 10
