@@ -452,6 +452,8 @@ target_compile_options(pdaf-d PRIVATE "-fallow-argument-mismatch")
 endif()
 endif()
 
+target_link_libraries(pdaf-d PRIVATE optim)
+
 # This will only work in newer versions of CMake
 #target_link_libraries(pdaf-d PRIVATE BLAS::BLAS)
 #target_link_libraries(pdaf-d PRIVATE LAPACK::LAPACK)
