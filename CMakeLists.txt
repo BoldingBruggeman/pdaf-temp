@@ -36,19 +36,20 @@ if(${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
 elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Cray")
    set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -N 1023")
 elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
-   set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -r8")
+  enable_language(C)
    if(WIN32)
+      set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} /real-size:64")
       set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} /Od")
    else()
+      set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -real-size 64")
       set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS} -mkl")
       #KB For newer versions of CMake - this is the way to go
-      enable_language(C)
       set(BLA_VENDOR Intel10_64lp_seq)
       #KB https://cmake.org/cmake/help/latest/module/FindBLAS.html
   endif()
 endif()
 
-#KBfind_package(BLAS REQUIRED)
+find_package(BLAS REQUIRED)
 find_package(LAPACK REQUIRED)
 
 option(PDAF_USE_MPI "Enable MPI parallelization" ON)
