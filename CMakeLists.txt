@@ -55,9 +55,9 @@ find_package(LAPACK REQUIRED)
 option(PDAF_USE_MPI "Enable MPI parallelization" ON)
 if(PDAF_USE_MPI AND NOT ${MPI_FOUND})
    find_package(MPI REQUIRED)
-   message(${MPI_FOUND})
+   message(STATUS ${MPI_FOUND})
 else()
-   message("PDAF: MPI is already configured - continuing")
+   message(STATUS "PDAF: MPI is already configured - continuing")
 endif(PDAF_USE_MPI AND NOT ${MPI_FOUND})
 
 # Use use position-independent code (-fPIC) everywhere if building shared libraries
