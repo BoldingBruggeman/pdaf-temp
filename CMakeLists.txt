@@ -29,24 +29,10 @@ if(USE_GIT_VERSION_INFO)
    endif()
 endif(USE_GIT_VERSION_INFO)
 
-# Customize compiler flags
-if(${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
-   set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -ffree-line-length-none")
-   set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -fdefault-real-8")
-elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Cray")
-   set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -N 1023")
-elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
-  enable_language(C)
-   if(WIN32)
-      set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} /real-size:64")
-      set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} /Od")
-   else()
-      set (CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -real-size 64")
-      set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS} -mkl")
-      #KB For newer versions of CMake - this is the way to go
-      set(BLA_VENDOR Intel10_64lp_seq)
-      #KB https://cmake.org/cmake/help/latest/module/FindBLAS.html
-  endif()
+if(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
+   # To find MKL, see https://cmake.org/cmake/help/latest/module/FindBLAS.html#intel-mkl
+   enable_language(C)
+   set(BLA_VENDOR Intel10_64lp_seq)
 endif()
 
 find_package(BLAS REQUIRED)

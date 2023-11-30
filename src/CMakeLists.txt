@@ -447,14 +447,25 @@ target_include_directories(pdaf-d
 if(${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
 string(REPLACE "." ";" VERSION_LIST ${CMAKE_Fortran_COMPILER_VERSION})
 list(GET VERSION_LIST 0 VERSION_MAJOR)
-if(${VERSION_MAJOR} GREATER "9")
-target_compile_options(pdaf-d PRIVATE "-fallow-argument-mismatch")
+   if(${VERSION_MAJOR} GREATER "9")
+      target_compile_options(pdaf-d PRIVATE "-fallow-argument-mismatch")
+   endif()
 endif()
+
+# Customize compiler flags as originally done by make.arch/*.h
+if(${CMAKE_Fortran_COMPILER_ID} STREQUAL "GNU")
+   target_compile_options(pdaf-d PRIVATE "-fdefault-real-8")
+elseif(${CMAKE_Fortran_COMPILER_ID} STREQUAL "Intel")
+   if(WIN32)
+      target_compile_options(pdaf-d PRIVATE "/real-size:64")
+   else()
+      target_compile_options(pdaf-d PRIVATE "-real-size 64")
+  endif()
 endif()
 
 target_link_libraries(pdaf-d PRIVATE optim)
 
-# This will only work in newer versions of CMake
+# This will only work in newer versions of CMake (>= 3.18)
 #target_link_libraries(pdaf-d PRIVATE BLAS::BLAS)
 #target_link_libraries(pdaf-d PRIVATE LAPACK::LAPACK)
 # So we use
@@ -463,9 +474,8 @@ target_link_libraries(pdaf-d PRIVATE ${LAPACK_LIBRARIES})
 
 if(PDAF_USE_MPI)
 #   set(MPI_Fortran_COMPILER_FLAGS,-static_mpi)
-   target_compile_options(pdaf-d PUBLIC -D_PDAF_USE_MPI_)
-   target_include_directories(pdaf-d PUBLIC "${MPI_Fortran_INCLUDE_PATH}")
-   target_link_libraries(pdaf-d PUBLIC ${MPI_Fortran_LIBRARIES} ${MPI_Fortran_LINK_FLAGS})
+   target_compile_definitions(pdaf-d PUBLIC _PDAF_USE_MPI_)
+   target_link_libraries(pdaf-d PUBLIC MPI::MPI_Fortran)
 else()
    target_include_directories(pdaf-d PRIVATE "${PROJECT_SOURCE_DIR}/dummympi")
 endif(PDAF_USE_MPI)
