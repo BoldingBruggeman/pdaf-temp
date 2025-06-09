@@ -429,7 +429,7 @@ set(SRC_PDAF
    )
 
 set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules)
-cmake_policy(SET CMP0004 OLD)
+#cmake_policy(SET CMP0004 OLD)
 add_library(pdaf-d)
 target_sources(pdaf-d PRIVATE
             ${MOD_PDAF}
